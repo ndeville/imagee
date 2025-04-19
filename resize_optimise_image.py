@@ -114,12 +114,13 @@ def create_output_filename(input_path, mode, output_format, target_width=None, t
 
 def main():
     # Configuration
-    input_path = "/Users/nic/Dropbox/Design/Logos/display5.webp"
+    # input_path = "/Users/nic/demo/pharma/drug-launch.png"
+    input_path = input("\nEnter the path to the image > ")
     output_format = 'jpg'
-    resize_mode = 'default'  # Options: 'exact', 'max', 'box', 'default'
-    exact_mode_focus = '0%'  # Options: 'center', 'top', 'bottom', '10%'
-    width = 500
-    height = 1080
+    resize_mode = 'exact'  # Options: 'exact', 'max', 'box', 'default'
+    exact_mode_focus = '45%'  # Options: 'center', 'top', 'bottom', '10%'
+    width = 1584
+    height = 396
     quality = 85
     
     # Create output filename
