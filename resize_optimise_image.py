@@ -117,10 +117,10 @@ def main():
     # input_path = "/Users/nic/demo/pharma/drug-launch.png"
     input_path = input("\nEnter the path to the image > ")
     output_format = 'jpg'
-    resize_mode = 'exact'  # Options: 'exact', 'max', 'box', 'default'
-    exact_mode_focus = '45%'  # Options: 'center', 'top', 'bottom', '10%'
-    width = 1584
-    height = 396
+    resize_mode = 'max'  # Options: 'exact', 'max', 'box', 'default'
+    exact_mode_focus = '60%'  # Options: 'center', 'top', 'bottom', '10%'
+    width = 1920
+    height = 1080
     quality = 85
     
     # Create output filename
