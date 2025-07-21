@@ -2,6 +2,7 @@
 from PIL import Image, ImageOps
 import os
 from datetime import datetime
+import pillow_avif  # Add AVIF support
 
 def _prepare_format_and_path(input_path, output_path=None, output_format=None):
     """Helper function to handle format and path preparation"""
@@ -13,6 +14,8 @@ def _prepare_format_and_path(input_path, output_path=None, output_format=None):
         output_format = 'JPEG'
     elif output_format.lower() == 'png':
         output_format = 'PNG'
+    elif output_format.lower() == 'avif':
+        output_format = 'AVIF'
     
     # Create output path if not provided
     if output_path is None:
@@ -33,6 +36,9 @@ def _save_image(img, output_path, output_format, quality=85):
     
     if output_format == 'JPEG':
         save_kwargs['quality'] = quality
+    elif output_format == 'AVIF':
+        save_kwargs['quality'] = quality
+        save_kwargs['speed'] = 6  # Faster encoding, lower compression
     
     img.save(output_path, format=output_format, **save_kwargs)
     return output_path
@@ -109,15 +115,18 @@ def create_output_filename(input_path, mode, output_format, target_width=None, t
     base = os.path.splitext(input_path)[0]
     resolution_suffix = ""
     if target_width and target_height:
-        resolution_suffix = f"{target_width}x{target_height}"
-    return f"{base}_{resolution_suffix}.{output_format.lower()}"
+        resolution_suffix = f"_{target_width}x{target_height}"
+    else:
+        resolution_suffix = ""
+    return f"{base}{resolution_suffix}.{output_format.lower()}"
 
 def main():
     # Configuration
     # input_path = "/Users/nic/demo/pharma/drug-launch.png"
     input_path = input("\nEnter the path to the image > ")
-    output_format = 'jpg'
+    output_format = 'png'
     resize_mode = 'default'  # Options: 'exact', 'max', 'box', 'default'
+    append_size_to_filename = False
     exact_mode_focus = '0%'  # Options: 'center', 'top', 'bottom', '10%'
     width = 1600
     height = 900
@@ -125,8 +134,11 @@ def main():
     
     # Create output filename
     mode_suffix = f'{resize_mode}_{exact_mode_focus}' if resize_mode == 'exact' else resize_mode
-    output_path = create_output_filename(input_path, mode_suffix, output_format, 
+    if append_size_to_filename:
+        output_path = create_output_filename(input_path, mode_suffix, output_format, 
                                        target_width=width, target_height=height)
+    else:
+        output_path = create_output_filename(input_path, mode_suffix, output_format)
     
     # Process based on mode
     if resize_mode == 'exact':
