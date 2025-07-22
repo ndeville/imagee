@@ -3,6 +3,10 @@ from PIL import Image, ImageOps
 import os
 from datetime import datetime
 import pillow_avif  # Add AVIF support
+import pillow_heif  # Add HEIF/HEIC support
+
+# Register HEIF/HEIC with PIL
+pillow_heif.register_heif_opener()
 
 def _prepare_format_and_path(input_path, output_path=None, output_format=None):
     """Helper function to handle format and path preparation"""
@@ -16,6 +20,8 @@ def _prepare_format_and_path(input_path, output_path=None, output_format=None):
         output_format = 'PNG'
     elif output_format.lower() == 'avif':
         output_format = 'AVIF'
+    elif output_format.lower() in ['heic', 'heif']:
+        output_format = 'JPEG'  # Default to JPEG for output if input is HEIC/HEIF
     
     # Create output path if not provided
     if output_path is None:
@@ -124,12 +130,12 @@ def main():
     # Configuration
     # input_path = "/Users/nic/demo/pharma/drug-launch.png"
     input_path = input("\nEnter the path to the image > ")
-    output_format = 'png'
-    resize_mode = 'default'  # Options: 'exact', 'max', 'box', 'default'
+    output_format = 'jpg'
+    resize_mode = 'max'  # Options: 'exact', 'max', 'box', 'default'
     append_size_to_filename = False
     exact_mode_focus = '0%'  # Options: 'center', 'top', 'bottom', '10%'
-    width = 1600
-    height = 900
+    width = 1920
+    height = 1080
     quality = 85
     
     # Create output filename
