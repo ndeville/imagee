@@ -92,21 +92,29 @@ def process_image_exact(input_path, width, height, output_path=None,
 
 def process_image_max(input_path, max_width=None, max_height=None, 
                      output_path=None, output_format=None, quality=85):
-    """Process image with maximum dimension constraints"""
+    """Process image with maximum dimension constraints without upscaling.
+
+    Only resizes when the input image exceeds the given max_width and/or
+    max_height. If the image already fits within the boundaries, its size is
+    preserved (format/quality optimization may still occur).
+    """
     img = Image.open(input_path)
     save_format, _ = _prepare_format_and_path(input_path, None, output_format)
     
-    # Apply max dimension resize
+    # Apply max dimension resize (no upscaling)
     if max_width and max_height:
-        img = ImageOps.contain(img, (max_width, max_height), Image.LANCZOS)
+        if img.width > max_width or img.height > max_height:
+            img = ImageOps.contain(img, (max_width, max_height), Image.LANCZOS)
     elif max_width:
-        w_percent = max_width / float(img.width)
-        h_size = int(float(img.height) * w_percent)
-        img = img.resize((max_width, h_size), Image.LANCZOS)
+        if img.width > max_width:
+            w_percent = max_width / float(img.width)
+            h_size = int(float(img.height) * w_percent)
+            img = img.resize((max_width, h_size), Image.LANCZOS)
     elif max_height:
-        h_percent = max_height / float(img.height)
-        w_size = int(float(img.width) * h_percent)
-        img = img.resize((w_size, max_height), Image.LANCZOS)
+        if img.height > max_height:
+            h_percent = max_height / float(img.height)
+            w_size = int(float(img.width) * h_percent)
+            img = img.resize((w_size, max_height), Image.LANCZOS)
     
     # Build output path in same folder with final size suffix if not provided
     if output_path is None:
@@ -187,6 +195,7 @@ def main():
 
     valid_extensions = ('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff', '.webp')
     if input_path.startswith("/") and input_path.lower().endswith(valid_extensions):
+        original_ext = os.path.splitext(input_path)[1].lower()
         pass
     else:
         print(f"❌ Input path is not a valid path: {input_path}")
@@ -195,7 +204,7 @@ def main():
             message=f'🔴🔴🔴 ERROR\nInput path is not a valid path: {input_path}',
         )
 
-    output_format = 'jpg'
+    output_format = 'png' if original_ext == '.png' else 'jpg'
     resize_mode = 'max'  # Options: 'exact', 'max', 'box', 'default'
     exact_mode_focus = '0%'  # Options: 'center', 'top', 'bottom', '10%'
     width = 1920
