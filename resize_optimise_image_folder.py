@@ -159,6 +159,6 @@ def process_folder(folder_path, width_cm):
             print(f"❌ Error processing {file_path.name}: {str(e)}")
 
 if __name__ == "__main__":
-    folder_path = "/Users/nic/Dropbox/Kaltura/presentations/img/dt-townhall"
+    folder_path = "/Users/nic/Dropbox/Kaltura/clients/nca/img/260123"
     width_cm = 33.87
     process_folder(folder_path, width_cm)
