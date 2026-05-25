@@ -1,0 +1,16 @@
+cairocffi==1.7.1
+CairoSVG==2.8.2
+cffi==1.15.1
+cssselect2==0.8.0
+defusedxml==0.7.1
+Pillow==9.2.0
+pillow-avif-plugin==1.5.2
+pillow-heif==0.7.1
+pycparser==2.21
+pync==2.0.3
+python-dateutil==2.9.0.post0
+python-dotenv==0.21.0
+rfpee==0.1.0
+six==1.17.0
+tinycss2==1.4.0
+webencodings==0.5.1
