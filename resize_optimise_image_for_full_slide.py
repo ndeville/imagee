@@ -83,7 +83,8 @@ def save_with_dpi(img: Image.Image, dest: str, format_hint: str):
 
 def main():
     # 1) Read absolute path from clipboard
-    src = copy_from_clipboard()
+    # A path argument (Filee action) wins; the clipboard stays the fallback (Alfred).
+    src = sys.argv[1] if len(sys.argv) > 1 else copy_from_clipboard()
     if not (src and src.startswith("/") and src.lower().endswith(VALID_EXTS)):
         print(f"❌ Invalid image path from clipboard: {src!r}")
         sys.exit(1)

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import sys
 from PIL import Image, ImageOps
 import os
 from datetime import datetime
@@ -191,7 +192,8 @@ def main():
 
     # input_path = "/Users/nic/demo/pharma/drug-launch.png"
     
-    input_path = copy_from_clipboard()
+    # A path argument (Filee action) wins; the clipboard stays the fallback (Alfred).
+    input_path = sys.argv[1] if len(sys.argv) > 1 else copy_from_clipboard()
 
     valid_extensions = ('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff', '.webp')
     if input_path.startswith("/") and input_path.lower().endswith(valid_extensions):

@@ -1,3 +1,4 @@
+import sys
 from PIL import Image, ImageOps
 from pathlib import Path
 from io import BytesIO
@@ -131,7 +132,8 @@ def copy_from_clipboard() -> str:
 
 while True:
     for i in range(100):
-        file_path = copy_from_clipboard()
+        # A path argument (Filee action) wins; the clipboard stays the fallback (Alfred).
+        file_path = sys.argv[1] if len(sys.argv) > 1 else copy_from_clipboard()
         print(f"\nProcessing:{file_path}")
         width = float(input("Enter width in cm: "))
         out = optimize_image(file_path, width)

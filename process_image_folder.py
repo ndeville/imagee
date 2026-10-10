@@ -1,3 +1,4 @@
+import sys
 import os
 import subprocess
 import shutil
@@ -8,7 +9,8 @@ def process_image_folder():
     """Process all images and .mp4 videos in a given folder"""
     
     # Get folder path from clipboard
-    folder_path = copy_from_clipboard().strip()
+    # A path argument (Filee action) wins; the clipboard stays the fallback (Alfred).
+    folder_path = (sys.argv[1] if len(sys.argv) > 1 else copy_from_clipboard()).strip()
     
     # Validate folder path
     if not os.path.isdir(folder_path):
